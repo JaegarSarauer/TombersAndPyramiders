@@ -1,4 +1,5 @@
 #include "InputManager.h"
+#include "MessageManager.h"
 
 InputManager* InputManager::s_instance;
 
@@ -55,6 +56,31 @@ void InputManager::updateKeys()
 
 void InputManager::handlePolledEvent(SDL_Event event)
 {
+	if (event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		std::map<std::string, void*> data;
+		data["x"] = (void*)event.button.x;
+		data["y"] = (void*)event.button.y;
+		data["isDoubleClick"] = (void*)(event.button.clicks - 1);
+		MessageManager::sendEvent ("MOUSE_DOWN", data);
+	}
+	if (event.type == SDL_MOUSEBUTTONUP)
+	{
+		std::map<std::string, void*> data;
+		data["x"] = (void*)event.button.x;
+		data["y"] = (void*)event.button.y;
+		data["isDoubleClick"] = (void*)(event.button.clicks - 1);
+		MessageManager::sendEvent ("MOUSE_UP", data);
+	}
+	if (event.type == SDL_MOUSEMOTION) {
+		std::map<std::string, void*> data;
+		data["x"] = (void*)event.button.x;
+		data["y"] = (void*)event.button.y;
+		data["state"] = (void*)event.button.state;
+		MessageManager::sendEvent ("MOUSE_MOVE", data);
+		std::cout << event.button.state << std::endl;
+	}
+
 	if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP)
 		return;
 	SDL_Keycode code = event.key.keysym.sym;

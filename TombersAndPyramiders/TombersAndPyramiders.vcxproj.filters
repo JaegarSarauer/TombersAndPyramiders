@@ -76,6 +76,9 @@
     <Filter Include="Source Files\Game\ExternalClasses\Items">
       <UniqueIdentifier>{609bb4e8-7259-48d7-bb47-14bfe7920735}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine\GameObject\UI">
+      <UniqueIdentifier>{eeb28287-4812-47d1-91d4-e00fbdceb2c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -299,6 +302,15 @@
     </ClCompile>
     <ClCompile Include="Game\ExternalClasses\BaseWeapon.cpp">
       <Filter>Source Files\Game\ExternalClasses\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkTestScene.cpp">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="TextSprite.cpp">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBox.cpp">
+      <Filter>Source Files\Engine\GameObject\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +544,15 @@
     </ClInclude>
     <ClInclude Include="Game\ExternalClasses\BaseWeapon.h">
       <Filter>Source Files\Game\ExternalClasses\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkTestScene.h">
+      <Filter>Source Files\Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="TextSprite.h">
+      <Filter>Source Files\Engine\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBox.h">
+      <Filter>Source Files\Engine\GameObject\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -219,31 +219,30 @@ void SpriteRendererManager::cleanup()
 	// Shutdown SDL 2
 	SDL_Quit();
 }
-
-GLuint SpriteRendererManager::generateTexture(std::string textureFileName)
+GLuint SpriteRendererManager::generateTexture (SDL_Surface* surface) 
 {
 	GLuint texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	SDL_Surface *temp = IMG_Load(textureFileName.c_str());
-	if (temp == nullptr)
+	glGenTextures (1, &texture);
+	glBindTexture (GL_TEXTURE_2D, texture);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	if (surface == nullptr)
 	{
-		GLenum errors = glGetError();
-		const char *sdlErrors = SDL_GetError();
+		GLenum errors = glGetError ();
+		const char *sdlErrors = SDL_GetError ();
 		std::cout << "ERROR::SPRITERENDERERMANAGER::FAILED TO READ FILE IN GENERATETEXTURE\n GLError: " << errors << " \nSDLErrors: " << sdlErrors << std::endl;
 		return 0;
 	}
 	//If it crashes, make sure the .png is 32bit not 24bit so it supports RGBA not RGB
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, temp->w, temp->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, temp->pixels);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
+	glGenerateMipmap (GL_TEXTURE_2D);
 
-	const char *sdlError = SDL_GetError();
-	GLenum glError = glGetError();
-	if (strlen(sdlError) > 0)
+	const char *sdlError = SDL_GetError ();
+	GLenum glError = glGetError ();
+	if (strlen (sdlError) > 0)
 	{
 		std::cout << sdlError << std::endl;
 	}
@@ -252,9 +251,14 @@ GLuint SpriteRendererManager::generateTexture(std::string textureFileName)
 		std::cout << glError << std::endl;
 	}
 
-	SDL_FreeSurface(temp);
-	glBindTexture(GL_TEXTURE_2D, 0);
+	SDL_FreeSurface (surface);
+	glBindTexture (GL_TEXTURE_2D, 0);
 	return texture;
+}
+
+GLuint SpriteRendererManager::generateTexture(std::string textureFileName)
+{
+	return generateTexture(IMG_Load(textureFileName.c_str()));
 }
 
 bool sortByZ(SpriteRenderer *lhs, SpriteRenderer *rhs)
@@ -278,12 +282,7 @@ void SpriteRendererManager::prepareRenderingThread()
 	std::sort(m_activeSprites.begin(), m_activeSprites.end(), sortByZ);
 	RenderingShaderGroup rg;
 
-	if (m_activeSprites.size() == 0)
-	{
-		std::cout << "SPRITERENDERERERMANAGER::PREPARERENDERINGTHREAD::EMPTY SPRITE LIST" << std::endl;
-	}
-	else
-	{
+	if (m_activeSprites.size() > 0) {
 		for (size_t i = 0; i < m_activeSprites.size(); i++)
 		{
 			SpriteRenderer *spriteRenderer = m_activeSprites[i];

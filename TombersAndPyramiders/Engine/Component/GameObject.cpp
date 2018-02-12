@@ -14,6 +14,7 @@ GameObject::GameObject(bool g)
 		SceneManager::getInstance()->getCurrentScene()->addGameObject(m_id, this);
 	m_transform = new Transform(this);
 	addComponent<Transform*>(m_transform);
+	this->onStart ();
 }
 
 void GameObject::onComponentsUpdate(int ticks)

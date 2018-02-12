@@ -69,7 +69,6 @@ private:
 	FrameBufferObject m_fboPlainPass, m_fboHorizontalGaussianBlur, m_fboGaussianBlur, m_fboBloomBrightness, m_fboBloomBlurBrightness, m_fboAmbientLighting;
 
 	//Rendering variables
-	SDL_Window* m_mainWindow = NULL;
 	SDL_GLContext m_glContext = NULL;
 	std::array<GLfloat, 12> m_quadVertices;
 	std::array<GLfloat, 8> m_textCoordinates;
@@ -91,11 +90,15 @@ public:
 	//void UnSubscribe(int id);
 	void onUpdate(int ticks);
 
+	//SDL Window used for text processeing.
+	SDL_Window* m_mainWindow = NULL;
+
 	SpriteRendererManager();
 	bool init();
 	void cleanup();
 	void render();
 	GLuint generateTexture(std::string textureFileName);
+	GLuint generateTexture (SDL_Surface* surface);
 	void addSpriteForRendering(SpriteRenderer* sprite);
 
 	void disableRenderingLayer(int layer);
